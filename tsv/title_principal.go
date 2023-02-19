@@ -25,3 +25,18 @@ func IterateTitlePrincipal(tsvPath string, yield func(*TitlePrincipalRow) error)
 		return yield(tpr)
 	})
 }
+
+func TitlePrincipalUniqCategory(tsvPath string) []string {
+	categories := []string{}
+	LoopTsv(tsvPath, func(lineno uint, rec []string) error {
+		category := rec[3]
+		for _, c := range categories {
+			if c == category {
+				return nil
+			}
+		}
+		categories = append(categories, category)
+		return nil
+	})
+	return categories
+}
